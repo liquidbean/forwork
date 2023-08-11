@@ -1,0 +1,28 @@
+name: Trigger CI/CD Workflow in Repo B
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to match the branch you want to trigger the event on
+
+jobs:
+  trigger_workflow_in_repo_b:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Trigger Workflow in Repo B
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.REPO_B_PAT }}" \
+            -H "Accept: application/vnd.github.everest-preview+json" \
+            "https://api.github.com/repos/liquidbean/ci/dispatches" \
+            -d '{
+              "event_type": "trigger-ci",
+              "client_payload": {
+                "source_repo": "${{ github.repository }}",
+                "commit_sha": "${{ github.sha }}"
+              }
+            }'
