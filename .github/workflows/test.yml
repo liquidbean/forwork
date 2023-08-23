@@ -1,6 +1,5 @@
 name: Trigger CI/CD Workflow in Repo B
 
-
 on:
   push:
     branches:
